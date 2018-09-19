@@ -12,5 +12,6 @@
 # By default this script does nothing.
 
 /usr/bin/xmodmap -e 'keycode 65 = space underscore space'
+alias whatbag='~/cruise/ros/scripts/whatbag.py'
 
 exit 0
