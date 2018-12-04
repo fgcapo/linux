@@ -3,6 +3,7 @@
 #include <iostream>
 #include <vector>
 #include <map>
+#include <algorithm>
 
 class IntervalVector {
 	struct Interval {
@@ -47,6 +48,22 @@ public:
         intervals.erase(firstIt+1, lastIt);
 		print();
 	}
+
+    bool contains(double x) {
+          auto it = std::upper_bound(intervals.begin(), intervals.end(), Interval{x, x},
+                [](const Interval &a, const Interval &b) { return a.start < b.start; });
+          std::cout << "searching for " << x;
+          if (it == intervals.begin()) {
+              std::cout << ": goes before start of set ";
+              return false;
+          }
+          if (it == intervals.end()) {
+              std::cout << ": goes after end of set ";
+          }
+          --it;
+          std::cout << ": found (" << it->start << ',' << it->end << ") ";
+          return it->start <= x && it->end > x;
+    }
 	
 	void print() {
         std::cout << "                ";
@@ -98,8 +115,8 @@ public:
 };
 
 int main() {
-    IntervalTree s;
-    //IntervalVector s;
+   // IntervalTree s;
+    IntervalVector s;
 	
 	s.insert(10, 16);
 	s.insert(-20, -18);
@@ -112,7 +129,18 @@ int main() {
 	s.insert(6, 7);
 	s.insert(-21, 8);
 	s.insert(30, 32);
-	s.insert(8, 30);
- 
+//	s.insert(8, 30);
+
+    std::cout << std::boolalpha << "=============================================\n";
+    s.print();
+    
+    std::cout << s.contains(-22) << "\n";
+    std::cout << s.contains(3) << "\n";
+    std::cout << s.contains(10) << "\n";
+    std::cout << s.contains(16) << "\n";
+    std::cout << s.contains(18) << "\n";
+    std::cout << s.contains(31) << "\n";
+    std::cout << s.contains(33) << "\n";
+    std::cout << std::endl;
     return 0;
 }
